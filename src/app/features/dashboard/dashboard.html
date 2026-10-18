@@ -12,22 +12,11 @@
     </select>
   </header>
 
-  <section class="summary-grid">
-    <article class="metric-card">
-      <span class="metric-label">Total balance</span>
-      <strong class="metric-value">€ 5,400.00</strong>
-    </article>
-
-    <article class="metric-card">
-      <span class="metric-label">Monthly income</span>
-      <strong class="metric-value positive">€ 2,500.00</strong>
-    </article>
-
-    <article class="metric-card">
-      <span class="metric-label">Monthly expenses</span>
-      <strong class="metric-value negative">€ 360.00</strong>
-    </article>
-  </section>
+  <app-summary-cards
+  [totalBalance]="totalBalance"
+  [monthlyIncome]="monthlyIncome"
+  [monthlyExpenses]="monthlyExpenses"
+  />
 
   <section class="analytics-grid">
     <article class="dashboard-panel">
@@ -37,9 +26,7 @@
           <p>Income vs. expenses</p>
         </div>
       </div>
-      <div class="chart-placeholder">
-        Chart coming next
-      </div>
+      <app-cash-flow-chart />
     </article>
 
     <article class="dashboard-panel">
@@ -49,9 +36,8 @@
           <p>Monthly expense breakdown</p>
         </div>
       </div>
-      <div class="category-placeholder">
-        Category chart coming next
-      </div>
+      
+      <app-spending-chart/>
     </article>
   </section>
 
@@ -62,6 +48,6 @@
         <p>Your latest transactions</p>
       </div>
     </div>
-    <p class="empty-state">Transactions will appear here.</p>
+    <app-recent-activity [transaction]="recentTransactions" />
   </section>
 </section>

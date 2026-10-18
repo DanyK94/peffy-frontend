@@ -1,0 +1,22 @@
+<section class="summary-grid" aria-label="Financial summary">
+  <article class="metric-card">
+    <span class="metric-label">Total Balance</span>
+    <p class="metric-value">
+      {{ formatCurrency(totalBalance()) }}
+    </p>
+  </article>
+
+  <article class="metric-card">
+    <span class="metric-label">Monthly Income</span>
+    <p class="metric-value positive">
+      {{ formatCurrency(monthlyIncome()) }}
+    </p>
+  </article>
+
+  <article class="metric-card">
+    <span class="metric-label">Monthly Expenses</span>
+    <p class="metric-value negative">
+      {{ formatCurrency(monthlyExpenses()) }}
+    </p>
+  </article>
+</section>

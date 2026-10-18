@@ -1,0 +1,34 @@
+<div class="transaction-list">
+    @for (transaction of transaction(); track transaction.description + transaction.date) {
+        <article class="transaction-row">
+            <div
+                class="transaction-icon"
+                [class.income-icon]="transaction.amount > 0"
+                [class.expense-icon]="transaction.amount < 0"
+                aria-hidden="true" >
+                {{ transaction.amount > 0 ? '+' : '-' }}
+            </div>
+            <div class="transaction-details">
+                <span class="transaction-description">
+                {{ transaction.description }}
+                </span>
+                <span class="transaction-meta">
+                {{ transaction.category }} · {{ transaction.account }}
+                </span>
+            </div>
+
+            <div class="transaction-summary">
+                <span
+                class="transaction-amount"
+                [class.positive]="transaction.amount > 0"
+                [class.negative]="transaction.amount < 0"
+                >
+                {{ formatCurrency(transaction.amount) }}
+                </span>
+                <span class="transaction-date">{{ transaction.date }}</span>
+            </div>
+    </article>
+    } @empty {
+        <p class="empty-state">No recent transactions.</p>
+    }
+</div>
