@@ -12,11 +12,19 @@
     </select>
   </header>
 
-  <app-summary-cards
-  [totalBalance]="totalBalance"
-  [monthlyIncome]="monthlyIncome"
-  [monthlyExpenses]="monthlyExpenses"
-  />
+  @if (isLoading) {
+    <p class="dashboard-status">Loading...</p>
+  } @else if (errorMessage) {
+    <p class="dashboard-error" role="alert"> {{errorMessage}}</p>
+    <button type="button" (click)="loadDashboard()">Retry</button>
+  } @else if (dashboardData){  
+    <app-summary-cards
+      [totalBalance]="dashboardData.totalBalance"
+      [monthlyIncome]="dashboardData.monthlyIncome"
+      [monthlyExpenses]="dashboardData.monthlyExpenses"/>    
+  }
+
+
 
   <section class="analytics-grid">
     <article class="dashboard-panel">

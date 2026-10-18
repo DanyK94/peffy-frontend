@@ -126,3 +126,20 @@
     padding: var(--space-4);
   }
 }
+.dashboard-status,
+.dashboard-error {
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+
+.dashboard-status {
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+}
+
+.dashboard-error {
+  color: var(--color-danger);
+  background: var(--color-danger-muted);
+}

@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SummaryCards } from './components/summary-cards/summary-cards';
 import { CashFlowChart } from './components/cash-flow-chart/cash-flow-chart';
 import { SpendingChart } from './components/spending-chart/spending-chart';
 import { RecentActivity } from './components/recent-activity/recent-activity';
+import { DashboardService } from './services/dashboard.service';
+import { DashboardResponse } from './models/dashboard.model';
 
 
 @Component({
@@ -11,14 +13,40 @@ import { RecentActivity } from './components/recent-activity/recent-activity';
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  private readonly dashboardService = inject(DashboardService);
+
+  dashboardData: DashboardResponse | null = null;
+  isLoading = true;
+  errorMessage: string | null = null;
+
+  readonly userId = 1;
+
+  ngOnInit(): void {
+    this.loadDashboard();
+  }
+
+  loadDashboard(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.dashboardService.getDashboard(this.userId).subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load dashboard: ', error);
+        this.errorMessage = 'Unable to load dashboard data.'
+        this.isLoading = false;
+      }
+    });
+  }
 
   // TEST DATA  ***//
   totalBalance = 5400;
   monthlyIncome = 2500;
   monthlyExpenses = 360;
-
-  // ********************** //
 
   recentTransactions = [
     {
@@ -71,4 +99,5 @@ export class Dashboard {
       icon: 'C'
     }
   ];
+  // ********************** //
 }
