@@ -1,1 +1,84 @@
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Theme */
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --color-bg: #0B1120;
+  --color-surface: #151E30;
+  --color-surface-elevated: #1E293B;
+  --color-surface-hover: #263449;
+
+  /* Brand */
+  --color-primary: #10B981;
+  --color-primary-hover: #34D399;
+  --color-primary-muted: #123C35;
+  --color-on-primary: #052E25;
+
+  /* Text */
+  --color-text: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+
+  /* Borders */
+  --color-border: #293449;
+  --color-border-strong: #3A4960;
+
+  /* Semantic */
+  --color-success: #34D399;
+  --color-danger: #F87171;
+  --color-warning: #FBBF24;
+  --color-info: #60A5FA;
+
+  /* Semantic surfaces */
+  --color-success-muted: #123C35;
+  --color-danger-muted: #42212B;
+  --color-warning-muted: #42351D;
+  --color-info-muted: #1D3150;
+
+  /* Layout */
+  --sidebar-width: 250px;
+  --content-max-width: 1600px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Effects */
+  --shadow-card: 0 4px 16px rgb(0 0 0 / 12%);
+}
+
+
+html {
+  min-height: 100%;
+  background: var(--color-bg);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
