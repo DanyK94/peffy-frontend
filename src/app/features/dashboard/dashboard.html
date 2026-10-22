@@ -17,7 +17,7 @@
   } @else if (errorMessage) {
     <p class="dashboard-error" role="alert"> {{errorMessage}}</p>
     <button type="button" (click)="loadDashboard()">Retry</button>
-  } @else if (dashboardData){  
+  } @else if (dashboardData; as data){  
     <app-summary-cards
       [totalBalance]="dashboardData.totalBalance"
       [monthlyIncome]="dashboardData.monthlyIncome"
@@ -47,6 +47,19 @@
       
       <app-spending-chart/>
     </article>
+  </section>
+
+  <section class="dashboard-panel">
+  <div class="panel-heading">
+    <div>
+      <h2>Monthly Budgets</h2>
+      <p>Spending by budget category</p>
+    </div>
+  </div>
+
+  @if (dashboardData; as data) {
+    <app-budget-overview [budgets]="data.budgets" />
+  }
   </section>
 
   <section class="dashboard-panel activity-panel">

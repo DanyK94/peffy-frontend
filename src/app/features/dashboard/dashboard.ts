@@ -5,10 +5,11 @@ import { SpendingChart } from './components/spending-chart/spending-chart';
 import { RecentActivity } from './components/recent-activity/recent-activity';
 import { DashboardService } from './services/dashboard.service';
 import { DashboardResponse } from './models/dashboard.model';
+import { BudgetOverview } from './components/budget-overview/budget-overview';
 
 
 @Component({
-  imports: [SummaryCards, CashFlowChart, SpendingChart, RecentActivity],
+  imports: [SummaryCards, CashFlowChart, SpendingChart, BudgetOverview, RecentActivity],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
@@ -32,8 +33,10 @@ export class Dashboard implements OnInit {
 
     this.dashboardService.getDashboard(this.userId).subscribe({
       next: (data) => {
+        console.log('Dashboard data:', data);
         this.dashboardData = data;
         this.isLoading = false;
+        console.error('Loading: ', this.isLoading);
       },
       error: (error) => {
         console.error('Failed to load dashboard: ', error);
@@ -44,10 +47,11 @@ export class Dashboard implements OnInit {
   }
 
   // TEST DATA  ***//
+  /*
   totalBalance = 5400;
   monthlyIncome = 2500;
   monthlyExpenses = 360;
-
+  */
   recentTransactions = [
     {
       description: 'Groceries',
@@ -99,5 +103,6 @@ export class Dashboard implements OnInit {
       icon: 'C'
     }
   ];
+  
   // ********************** //
 }
