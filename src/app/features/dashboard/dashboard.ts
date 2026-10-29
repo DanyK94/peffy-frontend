@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { SummaryCards } from './components/summary-cards/summary-cards';
 import { CashFlowChart } from './components/cash-flow-chart/cash-flow-chart';
 import { SpendingChart } from './components/spending-chart/spending-chart';
@@ -17,9 +17,10 @@ import { BudgetOverview } from './components/budget-overview/budget-overview';
 export class Dashboard implements OnInit {
   private readonly dashboardService = inject(DashboardService);
 
-  dashboardData: DashboardResponse | null = null;
-  isLoading = true;
-  errorMessage: string | null = null;
+  
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+  dashboardData= signal <DashboardResponse | null> (null);
 
   readonly userId = 1;
 
@@ -28,20 +29,20 @@ export class Dashboard implements OnInit {
   }
 
   loadDashboard(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
 
     this.dashboardService.getDashboard(this.userId).subscribe({
       next: (data) => {
         console.log('Dashboard data:', data);
-        this.dashboardData = data;
-        this.isLoading = false;
+        this.dashboardData.set(data);
+        this.isLoading.set(false);
         console.error('Loading: ', this.isLoading);
       },
       error: (error) => {
         console.error('Failed to load dashboard: ', error);
-        this.errorMessage = 'Unable to load dashboard data.'
-        this.isLoading = false;
+        this.errorMessage.set('Unable to load dashboard data.');
+        this.isLoading.set(false);
       }
     });
   }

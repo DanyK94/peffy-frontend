@@ -12,16 +12,16 @@
     </select>
   </header>
 
-  @if (isLoading) {
+  @if (isLoading()) {
     <p class="dashboard-status">Loading...</p>
-  } @else if (errorMessage) {
-    <p class="dashboard-error" role="alert"> {{errorMessage}}</p>
+  } @else if (errorMessage()) {
+    <p class="dashboard-error" role="alert"> {{errorMessage()}}</p>
     <button type="button" (click)="loadDashboard()">Retry</button>
-  } @else if (dashboardData; as data){  
+  } @else if (dashboardData(); as data){  
     <app-summary-cards
-      [totalBalance]="dashboardData.totalBalance"
-      [monthlyIncome]="dashboardData.monthlyIncome"
-      [monthlyExpenses]="dashboardData.monthlyExpenses"/>    
+      [totalBalance]="data.totalBalance"
+      [monthlyIncome]="data.monthlyIncome"
+      [monthlyExpenses]="data.monthlyExpenses"/>    
   }
 
 
@@ -57,7 +57,7 @@
     </div>
   </div>
 
-  @if (dashboardData; as data) {
+  @if (dashboardData(); as data) {
     <app-budget-overview [budgets]="data.budgets" />
   }
   </section>
