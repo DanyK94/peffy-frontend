@@ -5,17 +5,38 @@ import { SpendingChart } from './components/spending-chart/spending-chart';
 import { RecentActivity } from './components/recent-activity/recent-activity';
 import { DashboardService } from './services/dashboard.service';
 import { DashboardResponse } from './models/dashboard.model';
-import { BudgetOverview } from './components/budget-overview/budget-overview';
 
 
 @Component({
-  imports: [SummaryCards, CashFlowChart, SpendingChart, BudgetOverview, RecentActivity],
+  imports: [SummaryCards, CashFlowChart, SpendingChart, RecentActivity],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
   private readonly dashboardService = inject(DashboardService);
+
+  selectedMonth = new Date();
+
+  private getMonthDateRange(date: Date): {
+    startDate: string;
+    endDate: string;
+  } {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+
+    const formatDate = (value: Date): string => {
+      const year = value.getFullYear();
+      const month = String(value.getMonth()+1).padStart(2,'0');
+      const day = String(value.getDate()).padStart(2,'0');
+
+      return `${year}-${month}-${day}`;
+    }
+    return {
+      startDate: formatDate(new Date(year,month,1)),
+      endDate: formatDate(new Date(year, month + 1, 0))
+    };
+  }
 
   
   isLoading = signal(false);
@@ -32,12 +53,12 @@ export class Dashboard implements OnInit {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    this.dashboardService.getDashboard(this.userId).subscribe({
+    const {startDate, endDate} = this.getMonthDateRange(this.selectedMonth);
+
+    this.dashboardService.getDashboard(this.userId, startDate, endDate).subscribe({
       next: (data) => {
-        console.log('Dashboard data:', data);
         this.dashboardData.set(data);
         this.isLoading.set(false);
-        console.error('Loading: ', this.isLoading);
       },
       error: (error) => {
         console.error('Failed to load dashboard: ', error);
@@ -47,63 +68,20 @@ export class Dashboard implements OnInit {
     });
   }
 
-  // TEST DATA  ***//
-  /*
-  totalBalance = 5400;
-  monthlyIncome = 2500;
-  monthlyExpenses = 360;
-  */
-  recentTransactions = [
-    {
-      description: 'Groceries',
-      category: 'Food',
-      account: 'Revolut',
-      date: 'Oct 04, 2026',
-      amount: -120
-    },
-    {
-      description: 'Salary',
-      category: 'Income',
-      account: 'Intesa',
-      date: 'Oct 01, 2026',
-      amount: 2500
-    },
-    {
-      description: 'Restaurant',
-      category: 'Food',
-      account: 'Intesa',
-      date: 'Oct 03, 2026',
-      amount: -50
-    },
-    {
-      description: 'Fuel',
-      category: 'Transport',
-      account: 'Revolut',
-      date: 'Oct 05, 2026',
-      amount: -60
-    }
-  ];
+  changeMonth(offset: number) : void {
+    this.selectedMonth = new Date(
+      this.selectedMonth.getFullYear(),
+      this.selectedMonth.getMonth() + offset,
+      1
+    )
+    this.loadDashboard();
+  }
 
-  accounts = [
-    {
-      name: 'Intesa',
-      type: 'Bank account',
-      balance: 4370,
-      icon: 'I'
-    },
-    {
-      name: 'Revolut',
-      type: 'Bank account',
-      balance: 780,
-      icon: 'R'
-    },
-    {
-      name: 'Cash',
-      type: 'Cash account',
-      balance: 250,
-      icon: 'C'
-    }
-  ];
-  
-  // ********************** //
+  get selectedMonthLabel(): string {
+    return new Intl.DateTimeFormat('en-US', {
+      month : 'long',
+      year: 'numeric'
+    }).format(this.selectedMonth);
+  }
+
 }

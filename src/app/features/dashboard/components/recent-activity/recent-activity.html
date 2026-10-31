@@ -1,34 +1,28 @@
-<div class="transaction-list">
-    @for (transaction of transaction(); track transaction.description + transaction.date) {
-        <article class="transaction-row">
-            <div
-                class="transaction-icon"
-                [class.income-icon]="transaction.amount > 0"
-                [class.expense-icon]="transaction.amount < 0"
-                aria-hidden="true" >
-                {{ transaction.amount > 0 ? '+' : '-' }}
-            </div>
-            <div class="transaction-details">
-                <span class="transaction-description">
-                {{ transaction.description }}
-                </span>
-                <span class="transaction-meta">
-                {{ transaction.category }} · {{ transaction.account }}
-                </span>
-            </div>
+<div class="activity-list">
+  @if (recentTransactions().length > 0) {
+    @for (transaction of recentTransactions(); track transaction.id) {
+      <div class="activity-item">
+        <div class="activity-info">
+          <span class="activity-description">
+            {{ transaction.transDescription }}
+          </span>
 
-            <div class="transaction-summary">
-                <span
-                class="transaction-amount"
-                [class.positive]="transaction.amount > 0"
-                [class.negative]="transaction.amount < 0"
-                >
-                {{ formatCurrency(transaction.amount) }}
-                </span>
-                <span class="transaction-date">{{ transaction.date }}</span>
-            </div>
-    </article>
-    } @empty {
-        <p class="empty-state">No recent transactions.</p>
+          <span class="activity-details">
+            {{ transaction.categoryName }}
+            · {{ transaction.accountName }}
+            · {{ formatDate(transaction.transactionDate) }}
+          </span>
+        </div>
+
+        <span
+          class="activity-amount"
+          [class.income]="transaction.amount > 0"
+          [class.expense]="transaction.amount < 0">
+          {{ transaction.amount > 0 ? '+' : '' }}{{ formatCurrency(transaction.amount) }}
+        </span>
+      </div>
     }
+  } @else {
+    <p class="empty-state">No transactions available.</p>
+  }
 </div>

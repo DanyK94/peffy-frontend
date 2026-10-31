@@ -1,22 +1,66 @@
-<section class="summary-grid" aria-label="Financial summary">
-  <article class="metric-card">
-    <span class="metric-label">Total Balance</span>
-    <p class="metric-value">
-      {{ formatCurrency(totalBalance()) }}
-    </p>
-  </article>
 
-  <article class="metric-card">
-    <span class="metric-label">Monthly Income</span>
-    <p class="metric-value positive">
-      {{ formatCurrency(monthlyIncome()) }}
-    </p>
-  </article>
+<section class="summary-container">
 
-  <article class="metric-card">
-    <span class="metric-label">Monthly Expenses</span>
-    <p class="metric-value negative">
-      {{ formatCurrency(monthlyExpenses()) }}
-    </p>
-  </article>
+  <div class="summary-grid">
+
+    <article class="metric-card">
+      <span class="metric-label">Total Balance</span>
+      <p class="metric-value">
+        {{ formatCurrency(totalBalance()) }}
+      </p>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Monthly Income</span>
+      <p class="metric-value positive">
+        {{ formatCurrency(monthlyIncome()) }}
+      </p>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Monthly Expenses</span>
+      <p class="metric-value negative">
+        {{ formatCurrency(monthlyExpenses()) }}
+      </p>
+    </article>
+
+  </div>
+
+  @if (accounts().length > 0) {
+    <section class="accounts-section">
+      <div class="accounts-heading">
+        <h2>Accounts Overview</h2>
+        <span>{{ accounts().length }} accounts</span>
+      </div>
+
+      <div class="accounts-grid">
+        @for (account of accounts(); track account.accountId) {
+          <article class="account-card">
+
+            <div class="account-info">
+              <div class="account-icon">
+                {{ account.accountName.charAt(0) }}
+              </div>
+
+              <div class="account-details">
+                <span class="account-name">
+                  {{ account.accountName }}
+                </span>
+
+                <span class="account-type">
+                  {{ account.accountType }}
+                </span>
+              </div>
+            </div>
+
+            <div class="account-balance">
+              {{ formatCurrency(account.balance, account.currency) }}
+            </div>
+
+          </article>
+        }
+      </div>
+    </section>
+  }
+
 </section>

@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
+import { AccountSummary, TransactionData } from '../../models/dashboard.model';
 
 export interface RecentTransaction {
   description: string;
@@ -15,7 +16,22 @@ export interface RecentTransaction {
   templateUrl: './recent-activity.html',
 })
 export class RecentActivity {
-  transaction = input<RecentTransaction[]>([]);
+  transactions = input<TransactionData[]>([]);
+  accounts = input<AccountSummary[]>([]);
+
+  recentTransactions = computed(() => {
+    const accountMap = new Map(
+      this.accounts().map(account => [
+        account.accountId,
+        account.accountName
+      ])
+    );
+    return [...this.transactions()].sort((a,b) => b.transactionDate.localeCompare(a.transactionDate)).slice(0,15)
+    .map(transaction => ({
+      ...transaction,
+      accountName: accountMap.get(transaction.accountId) ?? `Account #$(transaction.accountId)`
+    }));
+  });
 
   formatCurrency(value: number): string {
     return new Intl.NumberFormat('it-IT', {
@@ -24,9 +40,11 @@ export class RecentActivity {
     }).format(value);
   }
 
-  trackTransaction(
-    _index: number,
-    transaction: RecentTransaction) : string {
-      return '${transaction.description} - ${transaction.date}';
-    }
+  formatDate(date: string): string {
+    return new Intl.DateTimeFormat('it-IT', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    }).format(new Date(`${date}T00:00:00`));
+  }
 }

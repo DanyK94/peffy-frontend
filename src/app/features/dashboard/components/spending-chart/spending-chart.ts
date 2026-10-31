@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { Chart, ChartConfiguration, ChartData, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { CategoryTotals } from '../../models/dashboard.model';
 
 Chart.register(...registerables);
 
@@ -11,19 +12,23 @@ Chart.register(...registerables);
   templateUrl: './spending-chart.html',
 })
 export class SpendingChart {
-  spendingData: ChartData<'doughnut'> = {
-    labels: ['Food', 'Transport', 'Entertainment', 'Other'],
-    datasets: [
-      {
+  categories = input<CategoryTotals[]>([]);
 
-  
-      data: [280, 80, 40, 0],
-      backgroundColor: ['#10B981', '#FBBF24', '#60A5FA', '#A78BFA'],
-      borderWidth: 0,
-      hoverOffset: 6
-      }
-    ] 
-  };
+  spendingData = computed<ChartData<'doughnut'>>(() => {
+    const categories = this.categories();
+
+    return {
+      labels: categories.map(category => category.categoryName),
+      datasets: [
+        {
+          data: categories.map(category => Math.abs(category.total)),
+          backgroundColor: ['#10B981', '#FBBF24',  '#60A5FA', '#A78BFA', '#F87171', '#38BDF8', '#FB923C', '#E879F9'],
+          borderWidth: 0,
+          hoverOffset: 6
+        }
+      ]
+    }
+  })
   spendingOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -42,6 +47,7 @@ export class SpendingChart {
         callbacks: {
           label: (context) => {
             const value = Number(context.raw ?? 0);
+
             const formatted = new Intl.NumberFormat('it-IT', {
               style: 'currency',
               currency: 'EUR'
@@ -53,4 +59,6 @@ export class SpendingChart {
       }
     }
   };
+
 }
+

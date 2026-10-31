@@ -7,9 +7,29 @@
       <p>Your financial activity at a glance.</p>
     </div>
 
-    <select aria-label="Select month" class="month-select">
-      <option>October 2026</option>
-    </select>
+    <div class="month-selector">
+      <button
+        type="button"
+        class="month-nav-button"
+        aria-label="Previous month"
+        (click)="changeMonth(-1)"
+      >
+        &lt;
+      </button>
+
+      <span class="month-label">
+        {{ selectedMonthLabel }}
+      </span>
+
+      <button
+        type="button"
+        class="month-nav-button"
+        aria-label="Next month"
+        (click)="changeMonth(1)"
+      >
+        &gt;
+      </button>
+    </div>
   </header>
 
   @if (isLoading()) {
@@ -19,48 +39,37 @@
     <button type="button" (click)="loadDashboard()">Retry</button>
   } @else if (dashboardData(); as data){  
     <app-summary-cards
-      [totalBalance]="data.totalBalance"
-      [monthlyIncome]="data.monthlyIncome"
-      [monthlyExpenses]="data.monthlyExpenses"/>    
-  }
+      [totalBalance]="data.balance"
+      [monthlyIncome]="data.monthIncome"
+      [monthlyExpenses]="data.monthExpenses"
+      [accounts]="data.accountSummList"/>    
 
 
 
-  <section class="analytics-grid">
-    <article class="dashboard-panel">
-      <div class="panel-heading">
-        <div>
-          <h2>Cash flow</h2>
-          <p>Income vs. expenses</p>
+
+    <section class="analytics-grid">
+      <article class="dashboard-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Cash flow</h2>
+            <p>Income vs. expenses</p>
+          </div>
         </div>
-      </div>
-      <app-cash-flow-chart />
-    </article>
+        <app-cash-flow-chart [transactions]="data.transactionSummList" />
+      </article>
 
-    <article class="dashboard-panel">
-      <div class="panel-heading">
-        <div>
-          <h2>Spending by category</h2>
-          <p>Monthly expense breakdown</p>
+      <article class="dashboard-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Spending by category</h2>
+            <p>Monthly expense breakdown</p>
+          </div>
         </div>
-      </div>
-      
-      <app-spending-chart/>
-    </article>
-  </section>
+        
+        <app-spending-chart [categories]="data.categorySummList" />
+      </article>
+    </section>
 
-  <section class="dashboard-panel">
-  <div class="panel-heading">
-    <div>
-      <h2>Monthly Budgets</h2>
-      <p>Spending by budget category</p>
-    </div>
-  </div>
-
-  @if (dashboardData(); as data) {
-    <app-budget-overview [budgets]="data.budgets" />
-  }
-  </section>
 
   <section class="dashboard-panel activity-panel">
     <div class="panel-heading">
@@ -69,6 +78,10 @@
         <p>Your latest transactions</p>
       </div>
     </div>
-    <app-recent-activity [transaction]="recentTransactions" />
+    <app-recent-activity
+      [transactions]="data.transactionSummList"
+      [accounts]="data.accountSummList"
+    />
   </section>
+}
 </section>

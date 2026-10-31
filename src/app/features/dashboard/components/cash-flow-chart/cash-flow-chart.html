@@ -1,7 +1,10 @@
 <div class="chart-container">
-  <canvas baseChart type="line"
-    [data]="cashFlowData"
+  <canvas
+    baseChart
+    type="bar"
+    [data]="cashFlowData()"
     [options]="cashFlowOptions"
-    aria-label="Cash flow chart showing income and expenses by week" role="img">
-    </canvas>
+    aria-label="Income and expenses by week"
+    role="img">
+  </canvas>
 </div>

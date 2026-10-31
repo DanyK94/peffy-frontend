@@ -1,11 +1,16 @@
 
 <div class="doughnut-container">
-  <canvas
-    baseChart
-    type="doughnut"
-    [data]="spendingData"
-    [options]="spendingOptions"
-    aria-label="Spending by category doughnut chart"
-    role="img"
-  ></canvas>
+  @if (categories().length > 0) {
+      <canvas
+        baseChart
+        type="doughnut"
+        [data]="spendingData()"
+        [options]="spendingOptions"
+        aria-label="Spending by category doughnut chart"
+        role="img"
+      ></canvas>
+  } @else {
+    <p class="empty-state">No expenses available for this period.</p>
+  }
+
 </div>
