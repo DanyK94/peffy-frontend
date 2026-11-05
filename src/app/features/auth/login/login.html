@@ -1,0 +1,50 @@
+
+<div class="login-page">
+  <div class="login-container">
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="nome@esempio.it"
+          autocomplete="email"
+          [class.invalid]="email.invalid && email.touched"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Inserisci la password"
+            autocomplete="current-password"
+            [class.invalid]="password.invalid && password.touched"
+          />
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Nascondi password' : 'Mostra password'"
+          >
+            {{ showPassword ? 'Nascondi' : 'Mostra' }}
+          </button>
+        </div>
+
+      </div>
+
+      <button type="submit" class="login-button">
+        Accedi
+      </button>
+
+    </form>
+
+  </div>
+</div>
