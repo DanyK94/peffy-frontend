@@ -9,7 +9,7 @@
         <input
           id="email"
           type="email"
-          name="email"
+          formControlName="email"
           placeholder="nome@esempio.it"
           autocomplete="email"
           [class.invalid]="email.invalid && email.touched"
@@ -40,8 +40,8 @@
 
       </div>
 
-      <button type="submit" class="login-button">
-        Accedi
+      <button type="submit" class="login-button" [disabled]="isLoading">
+        {{ isLoading ? 'Accesso in corso...' : 'Accedi'}}
       </button>
 
     </form>

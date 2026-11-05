@@ -122,3 +122,8 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.login-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

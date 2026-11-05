@@ -1,9 +1,11 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { csrfInterceptor } from './core/interceptors/csrf.interceptor';
+import { AuthService } from './features/auth/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +14,11 @@ export const appConfig: ApplicationConfig = {
     provideCharts(withDefaultRegisterables()),
     provideHttpClient(
       withInterceptors([csrfInterceptor])
-    )
+    ),
+    provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      return firstValueFrom( authService.refreshSession()).catch(()=> {authService.logout()});
+    })
   ],
 };
 
