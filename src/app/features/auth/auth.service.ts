@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable, switchMap, tap } from "rxjs";
+import { BehaviorSubject, filter, finalize, map, Observable, shareReplay, switchMap, take, tap } from "rxjs";
 import { API_CONFIG } from "../../app.config";
 
 export interface LoginRequest {
@@ -28,6 +28,9 @@ export class AuthService {
     
     private http = inject(HttpClient);
     private accessToken: string | null = null;
+    private isRefreshing = false;
+    private refreshTokenSubject = new BehaviorSubject<string | null>(null);
+    private refreshInProgress$: Observable<string> | null = null;
 
     login(credentials: LoginRequest): Observable<LoginResponse> {
         console.log('[AUTH] Avvio recupero CSRF');
@@ -45,6 +48,47 @@ export class AuthService {
         return this.http.get<void> (`${API_CONFIG.baseUrl}/auth/csrf`)
             .pipe( switchMap(() => this.http.post<LoginResponse>(`${API_CONFIG.baseUrl}/auth/refresh`, {})),
         tap(Response => {this.accessToken = Response.accessToken}));
+    }
+
+    /*
+    refreshAccessToken(): Observable<string> {
+
+        if (this.isRefreshing) {
+            return this.refreshTokenSubject.pipe(
+                filter(token => token !== null),
+                take(1)
+            );
+        }
+
+        this.isRefreshing = true;
+        this.refreshTokenSubject.next(null);
+
+        return this.refreshSession().pipe(
+            tap( response => { this.refreshTokenSubject.next(response.accessToken); }),
+            switchMap( response => { return [response.accessToken] }),
+            finalize( () => {this.isRefreshing = false;} )
+        );
+    }
+    */
+
+    refreshAccessToken(): Observable<string> {
+
+        if (this.refreshInProgress$) {
+            return this.refreshInProgress$;
+        }
+
+        this.refreshInProgress$ = this.refreshSession().pipe(
+            map(response => response.accessToken),
+            finalize(() => {
+            this.refreshInProgress$ = null;
+            }),
+            shareReplay({
+            bufferSize: 1,
+            refCount: false
+            })
+        );
+
+        return this.refreshInProgress$;
     }
 
     getAccessToken(): string | null {

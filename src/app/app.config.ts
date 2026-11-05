@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { csrfInterceptor } from './core/interceptors/csrf.interceptor';
 import { AuthService } from './features/auth/auth.service';
 import { firstValueFrom } from 'rxjs';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideCharts(withDefaultRegisterables()),
     provideHttpClient(
-      withInterceptors([csrfInterceptor])
+      withInterceptors([csrfInterceptor, authInterceptor])
     ),
     provideAppInitializer(() => {
       const authService = inject(AuthService);
