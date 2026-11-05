@@ -19,7 +19,7 @@
 
 .eyebrow {
   color: var(--color-text-muted);
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 1.4px;
 }
@@ -34,26 +34,7 @@
 .dashboard-header p {
   margin: 0;
   color: var(--color-text-secondary);
-  font-size: 12px;
-}
-
-.month-select {
-  min-width: 150px;
-  padding: 10px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  outline: none;
-  background: var(--color-surface);
-  color: var(--color-text);
-  box-shadow:
-    3px 3px 7px rgb(0 0 0 / 14%),
-    -2px -2px 6px rgb(255 255 255 / 2%);
-}
-
-.month-select:focus-visible {
-  border-color: var(--color-primary);
-  outline: 2px solid var(--color-primary-muted);
-  outline-offset: 2px;
+  font-size: var(--font-size-sm);
 }
 
 .analytics-grid {
@@ -91,7 +72,7 @@
 .panel-heading p {
   margin: 0;
   color: var(--color-text-secondary);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
 }
 
 .activity-panel {
@@ -116,10 +97,6 @@
 
   .dashboard-header h1 {
     font-size: 24px;
-  }
-
-  .month-select {
-    width: 100%;
   }
 
   .dashboard-panel {

@@ -22,7 +22,6 @@
 
   /* Borders */
   --color-border: #293449;
-  --color-border-strong: #3A4960;
 
   /* Semantic */
   --color-success: #34D399;
@@ -31,10 +30,7 @@
   --color-info: #60A5FA;
 
   /* Semantic surfaces */
-  --color-success-muted: #123C35;
   --color-danger-muted: #42212B;
-  --color-warning-muted: #42351D;
-  --color-info-muted: #1D3150;
 
   /* Layout */
   --sidebar-width: 250px;
@@ -49,8 +45,12 @@
   --space-6: 24px;
   --space-8: 32px;
 
+  /* Typography */
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+
   /* Radius */
-  --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
 
